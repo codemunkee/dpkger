@@ -8,9 +8,9 @@ import subprocess
 
 class deb_packager:
    def __init__(self):
-       self.base_dir = '/var/deb_packager'
+       self.base_dir = '/var/dpkgr'
        self.puppet_repo = '/opt/puppetmaster'
-       self.puppet_site = '/home/russ/site.pp'
+       self.puppet_site = None
        self.puppet_modules = ['standard',
                               'stdlib',
                               'engineering_users',
