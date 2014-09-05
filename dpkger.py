@@ -72,7 +72,7 @@ class deb_packager:
                Section: base
                Priority: optional
                Architecture: all
-               Depends: 
+               Depends: puppet (>= 2.7.23-1~deb7u3)
                Maintainer: Russ!
                Description: %s
                """ % (self.pkg_name, self.pkg_vers, self.pkg_name))
@@ -82,14 +82,15 @@ class deb_packager:
 
    def add_prun_script(self):
        """ Add a small script to do a local Puppet Apply """
-       prun_script = self.pkg_path + '/usr/local/bin/prun'
+       prun_script = self.pkg_path + '/usr/local/sbin/prun'
        content = '#!/bin/bash\n/usr/bin/puppet apply --modulepath /opt/puppet/modules ' +\
                  '/opt/puppet/manifests/site.pp\n'
-       ulb_path = self.pkg_path + '/usr/local/bin'
+       ulb_path = self.pkg_path + '/usr/local/sbin'
        if not os.path.exists(ulb_path):
            os.makedirs(ulb_path)
        with open(prun_script, 'w') as f:
            f.write(content)
+       os.chmod(prun_script, 700)
 
    def build_package(self):
        """ Contruct the actual Deb file """
