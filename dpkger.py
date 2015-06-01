@@ -7,18 +7,27 @@ import textwrap
 import subprocess
 
 class deb_packager:
-   def __init__(self):
-       self.base_dir = '/home/russ/packages'
-       self.puppet_repo = '/home/russ/puppetmaster'
+   """ This class will create debian packages that can be installed. You need
+       to tell it about a few things though:
+
+       base_dir : where your files sit that you want to turn into a pkg
+       puppet_repo : directory containing your puppet modules and manifests
+       control_file : the control file for building the pkg
+       postinit : a link to the postinit script you want to run
+       pkg_name : what should the pkg be called?
+       pkg_vers : whats the version number?
+       puppet_modules : a list of the modules you want include in the pkg """
+
+   def __init__(self, base_dir, puppet_repo, control_file, postinit, pkg_name
+                pkg_vers, puppet_modules):
+       self.base_dir = base_dir
+       self.puppet_repo = puppet_repo
        self.puppet_site = None
-       self.puppet_modules = ['standard',
-                              'stdlib',
-                              'engineering_users',
-                              'gogrid_mirror']
-       self.control_file = '/home/russ/site.pp'
-       self.postinit_sh = '/home/russ/postinit'
-       self.pkg_name = 'ggmirror'
-       self.pkg_vers = '0.1-1'
+       self.puppet_modules = []
+       self.control_file = control_file
+       self.postinit_sh = postinit
+       self.pkg_name = pkg_name
+       self.pkg_vers = pkg_vers
        self.pkg_path = self.base_dir + '/' + self.pkg_name
        # This is where control, preinstall, postinstall files go
        self.pkg_path_root = self.pkg_path + '/DEBIAN'
